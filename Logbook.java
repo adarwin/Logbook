@@ -65,11 +65,12 @@ public class Logbook
     return log(ERROR, exception.getMessage());
   }
 
-  public List<String> extractEntries(String type)
+
+
+  private List<String> extractEntries(String type)
   {
     return null;
   }
-
 
   private String getCurrentTime()
   {
