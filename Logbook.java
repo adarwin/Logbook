@@ -17,10 +17,13 @@ import java.util.List;
 
 public class Logbook
 {
+
   private String logFilePath;
   public static String ERROR = "ERROR  ";
   public static String WARNING = "WARNING";
   public static String INFO = "INFO   ";
+
+
 
   public Logbook(String logFilePath)
   {
@@ -38,18 +41,44 @@ public class Logbook
       System.err.println(ex.getStackTrace());
     }
     this.logFilePath = logFilePath;
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFilePath, true)))
+    {
+      writer.newLine();
+      writer.newLine();
+      writer.write("----- Logbook Object Initialized -----");
+      writer.newLine();
+      writer.newLine();
+    }
+    catch (IOException ex)
+    {
+      System.err.println(ex.getMessage());
+      System.err.println(ex.getStackTrace());
+    }
   }
+
+
 
   public boolean log(String message)
   {
     return log(INFO, message);
   }
+
+
+
   public boolean log(String type, String message)
   {
     boolean successful = true;
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFilePath, true)))
     {
-      writer.write(type + " - " + getCurrentTime() + ": " + message);
+      type += " - ";
+      char[] charArray = (type).toCharArray();
+      for(int i = 0; i < charArray.length; i++)
+      {
+        charArray[i] = ' ';
+      }
+      String messageIndent = new String(charArray);
+      writer.write(type + getCurrentTime() + ":\n"
+                   + messageIndent + message + "\n");
       writer.newLine();
     }
     catch (IOException ex)
@@ -60,10 +89,16 @@ public class Logbook
     }
     return successful;
   }
+
+
+
   public boolean log(String type, String header, String message)
   {
     return log(type, header + ": " + message);
   }
+
+
+
   public boolean log(Exception exception)
   {
     return log(ERROR, exception.getMessage());
@@ -76,6 +111,8 @@ public class Logbook
     return null;
   }
 
+
+
   private String getCurrentTime()
   {
     DateFormat dateFormat = new SimpleDateFormat("yyy/MM/dd HH:mm:ss");
@@ -83,4 +120,7 @@ public class Logbook
     String time = dateFormat.format(date);
     return time;
   }
+
+
+
 }
