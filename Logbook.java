@@ -60,6 +60,10 @@ public class Logbook
     }
     return successful;
   }
+  public boolean log(String type, String header, String message)
+  {
+    return log(type, header + ": " + message);
+  }
   public boolean log(Exception exception)
   {
     return log(ERROR, exception.getMessage());
