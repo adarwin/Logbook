@@ -10,12 +10,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Logbook
+public class Logbook implements Serializable
 {
 
   private String logFilePath;
@@ -102,6 +103,12 @@ public class Logbook
   public boolean log(Exception exception)
   {
     return log(ERROR, exception.getMessage());
+  }
+
+
+  public boolean log(String header, Exception exception)
+  {
+    return log(ERROR, header, exception.getMessage());
   }
 
 
